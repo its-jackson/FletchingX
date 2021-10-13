@@ -53,8 +53,8 @@ public class FletchingX implements TribotScript {
         Work cuttingWork = new Cutting(
                 Resource.YEW_LONGBOW_UNSTRUNG,
                 ResourceOption.SELL_TO_GRAND_EXCHANGE,
-                RunescapeBank.GRAND_EXCHANGE,
-                100 // -1 means until all supplies depleted
+                RunescapeBank.GRAND_EXCHANGE
+                 // -1 means until all supplies depleted
         );
         // add test work
         getVariables()

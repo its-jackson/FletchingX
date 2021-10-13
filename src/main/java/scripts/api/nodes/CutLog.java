@@ -4,6 +4,7 @@ import org.tribot.script.sdk.MakeScreen;
 import org.tribot.script.sdk.MyPlayer;
 import org.tribot.script.sdk.Waiting;
 import org.tribot.script.sdk.types.InventoryItem;
+import scripts.FletchingXVariables;
 import scripts.api.interfaces.Workable;
 import scripts.api.works.Cutting;
 import scripts.api.works.Work;
@@ -16,6 +17,8 @@ import java.util.Optional;
  * Cuts the log into the desired resource
  */
 public class CutLog extends Node implements Workable {
+
+    private final FletchingXVariables variables = FletchingXVariables.get();
 
     public CutLog(Work work) {
         super(work);
@@ -68,7 +71,7 @@ public class CutLog extends Node implements Workable {
         // has inventory knife
         // at required the bank
         // contains the specified supplies or ran out of supplies or time surpassed or reached level
-        return shouldCutLog(getWork()) && !getWork().validate();
+        return shouldCutLog(getWork());
     }
 
     @Override
@@ -77,20 +80,34 @@ public class CutLog extends Node implements Workable {
     }
 
     private void completeFletchingTask(Work work) {
+        // downcast work
+        Cutting cuttingWork = (Cutting) work;
         String resourceName = work.getResource().getResourceName();
 
         while (MyPlayer.isAnimating()) {
             log("Making " + resourceName);
             Waiting.waitUniform(500, 1000);
         }
+
+        int resourcesMade = work.findRequiredResources().size();
+        // update total resources made
+        getVariables().setTotalResourcesFletched(resourcesMade);
+        log(resourceName + " made total: " + getVariables().getTotalResourcesFletched());
+        // update supplies to make
+        cuttingWork.setSuppliesAmount(cuttingWork.getSuppliesAmount() - resourcesMade);
+        log(resourceName + " to go: " + cuttingWork.getSuppliesAmount());
     }
 
     private boolean shouldCutLog(Work work) {
-        if (((Cutting)work).inventoryContainsRequiredLogs()) {
+        if (((Cutting) work).inventoryContainsRequiredLogs()) {
             if (inventoryContainsKnife()) {
                 return isAtBank(work.getBankLocation());
             }
         }
         return false;
+    }
+
+    public FletchingXVariables getVariables() {
+        return variables;
     }
 }

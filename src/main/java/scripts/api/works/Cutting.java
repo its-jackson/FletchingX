@@ -11,7 +11,6 @@ import scripts.api.enums.ResourceLocation;
 import scripts.api.enums.ResourceOption;
 
 import java.util.List;
-import java.util.OptionalInt;
 
 /**
  * Cutting work; handles every type of log to be cut into another InventoryItem.
@@ -19,10 +18,15 @@ import java.util.OptionalInt;
 public class Cutting extends Work {
 
     // the amount of supplies to create
-    private long suppliesAmount;
+    // -1 by default for endless
+    private long suppliesAmount = -1;
 
     // the log required to make the supplies
     private Workable.Logs logRequired;
+
+    public Cutting(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation) {
+        super(resource, resourceOption, bankLocation);
+    }
 
     public Cutting(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, long suppliesAmount) {
         super(resource, resourceOption, bankLocation);
@@ -84,10 +88,10 @@ public class Cutting extends Work {
      */
     private boolean reachedSupplies() {
         if (BankCache.isInitialized()) {
-            OptionalInt bankCacheLogCountOptional = Workable.getBankCacheItemCount(getLogRequired().getLogID());
-            if (bankCacheLogCountOptional.isPresent()) {
-                return (bankCacheLogCountOptional.getAsInt() == 0 && !inventoryContainsRequiredLogs()) ;
-            }
+            // no more logs available to cut
+            boolean logsFullyDepleted = (BankCache.getStack(getLogRequired().getLogID()) == 0 && !inventoryContainsRequiredLogs());
+            // fletched the total supplies to make
+            return logsFullyDepleted || getSuppliesAmount() == 0;
         }
 
         return false;
@@ -108,7 +112,9 @@ public class Cutting extends Work {
     }
 
     public void setSuppliesAmount(long suppliesAmount) {
-        this.suppliesAmount = suppliesAmount;
+        if (this.suppliesAmount > 0) {
+            this.suppliesAmount = suppliesAmount;
+        }
     }
 
     public Workable.Logs getLogRequired() {

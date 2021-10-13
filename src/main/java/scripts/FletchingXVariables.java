@@ -15,6 +15,8 @@ public class FletchingXVariables {
 
     private boolean start;
 
+    private long totalResourcesFletched;
+
     public FletchingXVariables() {}
 
     public static FletchingXVariables get() {
@@ -53,6 +55,14 @@ public class FletchingXVariables {
         this.start = start;
     }
 
+    public long getTotalResourcesFletched() {
+        return totalResourcesFletched;
+    }
+
+    public void setTotalResourcesFletched(long totalResourcesFletched) {
+        this.totalResourcesFletched += totalResourcesFletched;
+    }
+
     @Override
     public String toString() {
         return "FletchingXVariables{" +
@@ -60,6 +70,7 @@ public class FletchingXVariables {
                 ", nodes=" + nodes +
                 ", waitTimes=" + waitTimes +
                 ", start=" + start +
+                ", totalResourcesFletched=" + totalResourcesFletched +
                 '}';
     }
 }

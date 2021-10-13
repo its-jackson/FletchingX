@@ -77,18 +77,16 @@ public class Banking extends Node implements Workable {
 
     @Override
     public synchronized boolean validate() {
-        if (!getWork().validate()) {
-            if (getWork() instanceof Cutting) {
-                // do cutting
-                return shouldInitalizeBankCache(getWork()) ||
-                        shouldDepositCutting(getWork()) ||
-                        shouldWithdrawCutting(getWork()) ||
-                        shouldWithdrawKnife(getWork())
-                        ;
+        if (getWork() instanceof Cutting) {
+            // do cutting
+            return shouldInitalizeBankCache(getWork()) ||
+                    shouldDepositResourcesCutting(getWork()) ||
+                    shouldWithdrawLogsCutting(getWork()) ||
+                    shouldWithdrawKnife(getWork())
+                    ;
 
-            } else {
-                // do stringing
-            }
+        } else {
+            // do stringing
         }
 
         return false;
@@ -116,12 +114,12 @@ public class Banking extends Node implements Workable {
     // inventory contains knife
     // inventory contains resource made
     // inventory does not contain logs
-    private boolean shouldDepositCutting(Work work) {
+    private boolean shouldDepositResourcesCutting(Work work) {
         if (isAtBank(work.getBankLocation())) {
             if (BankCache.isInitialized()) {
                 if (inventoryContainsKnife()) {
                     if (work.inventoryContainsRequiredResources()) {
-                        if (!((Cutting)work).inventoryContainsRequiredLogs()) {
+                        if (!((Cutting) work).inventoryContainsRequiredLogs()) {
                             setShouldDepositCutting(true);
                             return isShouldDepositCutting();
                         }
@@ -137,7 +135,7 @@ public class Banking extends Node implements Workable {
     // inventory contains knife
     // inventory does not contain logs
     // inventory does not contain resources made
-    private boolean shouldWithdrawCutting(Work work) {
+    private boolean shouldWithdrawLogsCutting(Work work) {
         Cutting cuttingWork = (Cutting) work;
 
         if (isAtBank(work.getBankLocation())) {
@@ -197,8 +195,18 @@ public class Banking extends Node implements Workable {
         int logCount = Bank.getCount(logName);
         int depositCount = depositAllExceptKnife();
 
+        // find appropriate amount to withdraw
+        // -1 infinite, until all logs fully depleted
+        long amountToWithdraw = cuttingWork.getSuppliesAmount() == -1 ? 27 : cuttingWork.getSuppliesAmount();
+        amountToWithdraw = Math.min(27, amountToWithdraw);
+
         if (logCount > 0) {
-            boolean withdrawResult = Bank.withdrawAll(logName);
+            boolean withdrawResult;
+            if (amountToWithdraw == 27) {
+                withdrawResult = Bank.withdrawAll(logName);
+            } else {
+                withdrawResult = Bank.withdraw(logName, (int) amountToWithdraw);
+            }
             boolean waitResult = Waiting.waitUntil(cuttingWork::inventoryContainsRequiredLogs);
             return waitResult || withdrawResult;
         }

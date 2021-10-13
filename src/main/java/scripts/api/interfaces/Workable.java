@@ -9,8 +9,6 @@ import org.tribot.script.sdk.query.Query;
 import org.tribot.script.sdk.types.InventoryItem;
 import org.tribot.script.sdk.types.WorldTile;
 import org.tribot.script.sdk.walking.LocalWalking;
-import scripts.api.works.Cutting;
-import scripts.api.works.Work;
 
 import java.util.List;
 import java.util.Map;
@@ -145,26 +143,6 @@ public interface Workable {
         return false;
     }
 
-//    default boolean inventoryContainsRequiredLogs(Work work) {
-//        return !findRequiredLogs(work).isEmpty();
-//    }
-//
-//    default List<InventoryItem> findRequiredLogs(Work work) {
-//        return (work == null) ? List.of() : Query.inventory()
-//                .nameContains(((Cutting) work).getLogRequired().getLogName())
-//                .toList();
-//    }
-
-//    default boolean inventoryContainsRequiredResources(Work work) {
-//        return !findRequiredResources(work).isEmpty();
-//    }
-//
-//    default List<InventoryItem> findRequiredResources(Work work) {
-//        return (work == null) ? List.of() : Query.inventory()
-//                .nameContains(work.getResource().getResourceName())
-//                .toList();
-//    }
-
     default int depositAllExcept(String... item) {
         return Banking.depositAllExcept(item);
     }
@@ -180,6 +158,8 @@ public interface Workable {
     default boolean bankCacheContains(int itemID) {
         return getBankCacheItemIDS().contains(itemID);
     }
+
+    // static methods below
 
     static List<Integer> getBankCacheItemIDS() {
         return BankCache.entries()
