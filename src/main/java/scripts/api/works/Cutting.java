@@ -17,30 +17,35 @@ import java.util.List;
  */
 public class Cutting extends Work {
 
-    // the amount of supplies to create
-    // -1 by default for endless
-    private long suppliesAmount = -1;
-
     // the log required to make the supplies
     private Workable.Logs logRequired;
 
-    public Cutting(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation) {
-        super(resource, resourceOption, bankLocation);
+    public Cutting(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, TimeElapse time) {
+        super(resource, resourceOption, bankLocation, time);
+    }
+
+    public Cutting(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, TimeElapse time, long suppliesToMake) {
+        super(resource, resourceOption, bankLocation, time, suppliesToMake);
+    }
+
+    public Cutting(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, int level, long suppliesToMake) {
+        super(resource, resourceOption, bankLocation, level, suppliesToMake);
     }
 
     public Cutting(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, long suppliesAmount) {
+        super(resource, resourceOption, bankLocation, suppliesAmount);
+    }
+
+    public Cutting(Resource resource, ResourceOption resourceOption, int level, TimeElapse time, long suppliesAmount) {
+        super(resource, resourceOption, level, time, suppliesAmount);
+    }
+
+    public Cutting(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, int level) {
+        super(resource, resourceOption, bankLocation, level);
+    }
+
+    public Cutting(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation) {
         super(resource, resourceOption, bankLocation);
-        this.suppliesAmount = suppliesAmount;
-    }
-
-    public Cutting(Resource resource, ResourceLocation resourceLocation, ResourceOption resourceOption, int level, TimeElapse time, long suppliesAmount) {
-        super(resource, resourceLocation, resourceOption, level, time);
-        this.suppliesAmount = suppliesAmount;
-    }
-
-    public Cutting(Resource resource, ResourceLocation resourceLocation, ResourceOption resourceOption, long suppliesAmount) {
-        super(resource, resourceLocation, resourceOption);
-        this.suppliesAmount = suppliesAmount;
     }
 
     public Cutting(Resource resource, ResourceLocation resourceLocation, ResourceOption resourceOption, int level, TimeElapse time) {
@@ -59,20 +64,65 @@ public class Cutting extends Work {
         super();
     }
 
+
     @Override
     public boolean validate() {
-        return super.validate() || reachedSupplies();
+        return super.validate() || logsFullyDepleted() || cannotFletchAnymoreShields();
     }
 
     @Override
     public void completeState(Resource resource) {
         switch (resource) {
+            case SHORTBOW_UNSTRUNG:
+            case LONGBOW_UNSTRUNG:
+            case SHAFTS:
+            case STOCK:
+                setLogRequired(Workable.Logs.LOG);
+                break;
+            case OAK_SHORTBOW_UNSTRUNG:
+            case OAK_LONGBOW_UNSTRUNG:
+            case OAK_SHAFTS:
+            case OAK_STOCK:
+            case OAK_SHIELD:
+                setLogRequired(Workable.Logs.OAK_LOG);
+                break;
+            case WILLOW_SHORTBOW_UNSTRUNG:
+            case WILLOW_LONGBOW_UNSTRUNG:
+            case WILLOW_SHAFTS:
+            case WILLOW_STOCK:
+            case WILLOW_SHIELD:
+                setLogRequired(Workable.Logs.WILLOW_LOG);
+                break;
+            case MAPLE_SHORTBOW_UNSTRUNG:
+            case MAPLE_LONGBOW_UNSTRUNG:
+            case MAPLE_SHAFTS:
+            case MAPLE_STOCK:
+            case MAPLE_SHIELD:
+                setLogRequired(Workable.Logs.MAPLE_LOG);
+                break;
+            case YEW_SHORTBOW_UNSTRUNG:
+            case YEW_LONGBOW_UNSTRUNG:
+            case YEW_SHAFTS:
             case YEW_STOCK:
             case YEW_SHIELD:
-            case YEW_SHAFTS:
-            case YEW_SHORTBOW_UNSTRUNG:
-            case YEW_LONGBOW_UNSTRUNG: setLogRequired(Workable.Logs.YEW_LOG);
-            break;
+                setLogRequired(Workable.Logs.YEW_LOG);
+                break;
+            case MAGIC_SHORTBOW_UNSTRUNG:
+            case MAGIC_LONGBOW_UNSTRUNG:
+            case MAGIC_SHAFTS:
+            case MAGIC_STOCK:
+            case MAGIC_SHIELD:
+                setLogRequired(Workable.Logs.MAGIC_LOG);
+                break;
+            case REDWOOD_SHAFTS:
+            case REDWOOD_SHIELD:
+                setLogRequired(Workable.Logs.REDWOOD_LOG);
+                break;
+            case TEAK_STOCK:
+                setLogRequired(Workable.Logs.TEAK_LOG);
+                break;
+            case MAHOGANY_STOCK:
+                setLogRequired(Workable.Logs.MAHOGANY_LOG);
         }
     }
 
@@ -81,17 +131,22 @@ public class Cutting extends Work {
 
     }
 
-    /**
-     * Determine if the amount of supplies met or if all required logs are depleted.
-     *
-     * @return True if amount of supplies or all supplies depleted otherwise; false.
-     */
-    private boolean reachedSupplies() {
+    public boolean logsFullyDepleted() {
         if (BankCache.isInitialized()) {
             // no more logs available to cut
-            boolean logsFullyDepleted = (BankCache.getStack(getLogRequired().getLogID()) == 0 && !inventoryContainsRequiredLogs());
-            // fletched the total supplies to make
-            return logsFullyDepleted || getSuppliesAmount() == 0;
+            // bank does not contain enough gold to buy remainder logs / supplies to make
+            return (BankCache.getStack(getLogRequired().getLogID()) == 0 && !inventoryContainsRequiredLogs());
+        }
+
+        return false;
+    }
+
+    public boolean cannotFletchAnymoreShields() {
+        if (getResource().getResourceName().contains("shield")) {
+            // cannot make shields if logs less than two
+            // if supplies to make is less == 1
+            // and the logs available inside the inventory are less than 2
+            return getSuppliesToMake() == 1;
         }
 
         return false;
@@ -103,18 +158,8 @@ public class Cutting extends Work {
 
     public List<InventoryItem> findRequiredLogs() {
         return Query.inventory()
-                .nameContains(getLogRequired().getLogName())
+                .nameEquals(getLogRequired().getLogName())
                 .toList();
-    }
-
-    public long getSuppliesAmount() {
-        return suppliesAmount;
-    }
-
-    public void setSuppliesAmount(long suppliesAmount) {
-        if (this.suppliesAmount > 0) {
-            this.suppliesAmount = suppliesAmount;
-        }
     }
 
     public Workable.Logs getLogRequired() {
@@ -123,5 +168,13 @@ public class Cutting extends Work {
 
     public void setLogRequired(Workable.Logs logRequired) {
         this.logRequired = logRequired;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                "Cutting{" +
+                "logRequired=" + logRequired +
+                '}';
     }
 }

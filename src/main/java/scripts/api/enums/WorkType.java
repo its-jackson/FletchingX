@@ -2,11 +2,9 @@ package scripts.api.enums;
 
 public enum WorkType {
 
-    BOW("Bow"),
-    UNSTRUNG_BOW("Unstrung Bow"),
-    SHIELD("Shield"),
-    SHAFT("Shaft"),
-    STOCK("Stock")
+    CUTTING("Cutting"),
+    STRINGING("Stringing"),
+    ALCHEMY("Alchemy")
     ;
 
     private final String workType;

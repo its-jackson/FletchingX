@@ -14,6 +14,10 @@ import scripts.api.interfaces.Validatable;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Purpose of class: Superclass for all work instantiated. Used for defining the behaviour of the nodes and
+ *                      which nodes to be utilized. The work also validates when to stop the script or when to continue.
+ */
 public abstract class Work implements Validatable, Serializable {
 
     private Resource resource;
@@ -24,6 +28,62 @@ public abstract class Work implements Validatable, Serializable {
     private TimeElapse time;
     private RunescapeBank bankLocation;
     private WorldTile alternateBankLocation;
+
+    // the amount of supplies to create
+    // default -1 means until all supplies (logs / bow string / unstrung bows) fully depleted
+    private long suppliesToMake = -1;
+
+    public Work(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, TimeElapse time) {
+        this.resource = resource;
+        this.resourceOption = resourceOption;
+        this.bankLocation = bankLocation;
+        this.time = time;
+        completeState(this.resource);
+    }
+
+
+    public Work(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, TimeElapse time, long suppliesToMake) {
+        this.resource = resource;
+        this.resourceOption = resourceOption;
+        this.bankLocation = bankLocation;
+        this.time = time;
+        this.suppliesToMake = suppliesToMake;
+        completeState(this.resource);
+    }
+
+    public Work(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, int level, long suppliesToMake) {
+        this.resource = resource;
+        this.resourceOption = resourceOption;
+        this.bankLocation = bankLocation;
+        this.level = level;
+        this.suppliesToMake = suppliesToMake;
+        completeState(this.resource);
+    }
+
+    public Work(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, long suppliesToMake) {
+        this.resource = resource;
+        this.resourceOption = resourceOption;
+        this.bankLocation = bankLocation;
+        this.suppliesToMake = suppliesToMake;
+        completeState(this.resource);
+    }
+
+    public Work(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, int level) {
+        this.resource = resource;
+        this.resourceOption = resourceOption;
+        this.bankLocation = bankLocation;
+        this.level = level;
+        completeState(this.resource);
+    }
+
+    public Work(Resource resource, ResourceOption resourceOption, int level, TimeElapse time, long suppliesToMake) {
+        this.resource = resource;
+        this.resourceOption = resourceOption;
+        this.level = level;
+        this.time = time;
+        this.suppliesToMake = suppliesToMake;
+        completeState(this.resource);
+    }
 
     public Work(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation) {
         this.resource = resource;
@@ -91,7 +151,7 @@ public abstract class Work implements Validatable, Serializable {
     public boolean validate() {
         // reached specific level
         // or reached the time elapsed
-        return reachedLevel() || reachedTime();
+        return reachedLevel() || reachedTime() || reachedSupplies();
     }
 
     public boolean reachedLevel() {
@@ -99,9 +159,13 @@ public abstract class Work implements Validatable, Serializable {
         if (getLevel() <= 0 || getLevel() > 99) {
             return false;
         }
-        if (this instanceof Cutting) {
+
+        if (this instanceof Cutting || this instanceof Stringing) {
             return Skill.FLETCHING.getActualLevel() >= getLevel();
+        } else if (this instanceof Alchemy) {
+            return Skill.MAGIC.getActualLevel() >= getLevel();
         }
+
         return false;
     }
 
@@ -110,13 +174,22 @@ public abstract class Work implements Validatable, Serializable {
         return getTime() != null && getTime().validate();
     }
 
-    public boolean inventoryContainsRequiredResources() {
-        return !findRequiredResources().isEmpty();
+    /**
+     * Determine if the amount of supplies met
+     *
+     * @return True if amount of supplies or all supplies depleted otherwise; false.
+     */
+    public boolean reachedSupplies() {
+        return getSuppliesToMake() == 0;
     }
 
-    public List<InventoryItem> findRequiredResources() {
+    public boolean inventoryContainsResources() {
+        return !findResources().isEmpty();
+    }
+
+    public List<InventoryItem> findResources() {
         return Query.inventory()
-                .nameContains(getResource().getResourceName())
+                .nameEquals(getResource().getResourceName())
                 .toList();
     }
 
@@ -176,6 +249,20 @@ public abstract class Work implements Validatable, Serializable {
         this.alternateBankLocation = alternateBankLocation;
     }
 
+    public long getSuppliesToMake() {
+        return suppliesToMake;
+    }
+
+    public void setSuppliesToMake(long suppliesToMake) {
+        this.suppliesToMake = suppliesToMake;
+    }
+
+    public void decrementSuppliesToMake() {
+        if (this.suppliesToMake != -1) {
+            this.suppliesToMake--;
+        }
+    }
+
     @Override
     public String toString() {
         return "Work{" +
@@ -186,6 +273,7 @@ public abstract class Work implements Validatable, Serializable {
                 ", time=" + time +
                 ", bankLocation=" + bankLocation +
                 ", alternateBankLocation=" + alternateBankLocation +
+                ", suppliesToMake=" + suppliesToMake +
                 '}';
     }
 }

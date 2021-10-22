@@ -1,9 +1,8 @@
 package scripts;
 
-import scripts.api.works.Cutting;
+import scripts.api.antiban.Seed;
 import scripts.api.works.Work;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,18 +12,16 @@ public class FletchingXSettings {
     private boolean repeatShuffle;
     private boolean doNotRepeat;
 
-    private String antiBanSeed;
-    private boolean useAntiBanSeed;
     private boolean fatigue;
     private boolean microSleep;
 
-    private boolean worldHop;
+    private boolean worldHopPlayerCount;
     private boolean worldHopRandom;
-    private boolean worldHopNoResources;
     private double worldHopFactor;
 
-    private List<Cutting> fletchCuttingWork = new LinkedList<>();
-    private List<Work> work = new ArrayList<>();
+    private Seed antiBanSeed;
+
+    private List<Work> work = new LinkedList<>();
 
     public FletchingXSettings() {}
 
@@ -52,20 +49,12 @@ public class FletchingXSettings {
         this.doNotRepeat = doNotRepeat;
     }
 
-    public String getAntiBanSeed() {
+    public Seed getAntiBanSeed() {
         return antiBanSeed;
     }
 
-    public void setAntiBanSeed(String antiBanSeed) {
+    public void setAntiBanSeed(Seed antiBanSeed) {
         this.antiBanSeed = antiBanSeed;
-    }
-
-    public boolean isUseAntiBanSeed() {
-        return useAntiBanSeed;
-    }
-
-    public void setUseAntiBanSeed(boolean useAntiBanSeed) {
-        this.useAntiBanSeed = useAntiBanSeed;
     }
 
     public boolean isFatigue() {
@@ -84,12 +73,12 @@ public class FletchingXSettings {
         this.microSleep = microSleep;
     }
 
-    public boolean isWorldHop() {
-        return worldHop;
+    public boolean isWorldHopPlayerCount() {
+        return worldHopPlayerCount;
     }
 
-    public void setWorldHop(boolean worldHop) {
-        this.worldHop = worldHop;
+    public void setWorldHopPlayerCount(boolean worldHopPlayerCount) {
+        this.worldHopPlayerCount = worldHopPlayerCount;
     }
 
     public boolean isWorldHopRandom() {
@@ -100,28 +89,12 @@ public class FletchingXSettings {
         this.worldHopRandom = worldHopRandom;
     }
 
-    public boolean isWorldHopNoResources() {
-        return worldHopNoResources;
-    }
-
-    public void setWorldHopNoResources(boolean worldHopNoResources) {
-        this.worldHopNoResources = worldHopNoResources;
-    }
-
     public double getWorldHopFactor() {
         return worldHopFactor;
     }
 
     public void setWorldHopFactor(double worldHopFactor) {
         this.worldHopFactor = worldHopFactor;
-    }
-
-    public List<Cutting> getFletchCuttingWork() {
-        return fletchCuttingWork;
-    }
-
-    public void setFletchCuttingWork(List<Cutting> fletchCuttingWork) {
-        this.fletchCuttingWork = fletchCuttingWork;
     }
 
     public List<Work> getWork() {
@@ -134,19 +107,16 @@ public class FletchingXSettings {
 
     @Override
     public String toString() {
-        return "FletchingXSettings{" +
+        return "PolymorphicFletcherSettings{" +
                 "repeat=" + repeat +
                 ", repeatShuffle=" + repeatShuffle +
                 ", doNotRepeat=" + doNotRepeat +
-                ", antiBanSeed='" + antiBanSeed + '\'' +
-                ", useAntiBanSeed=" + useAntiBanSeed +
                 ", fatigue=" + fatigue +
                 ", microSleep=" + microSleep +
-                ", worldHop=" + worldHop +
+                ", worldHopPlayerCount=" + worldHopPlayerCount +
                 ", worldHopRandom=" + worldHopRandom +
-                ", worldHopNoResources=" + worldHopNoResources +
                 ", worldHopFactor=" + worldHopFactor +
-                ", fletchCuttingWork=" + fletchCuttingWork +
+                ", antiBanSeed=" + antiBanSeed +
                 ", work=" + work +
                 '}';
     }

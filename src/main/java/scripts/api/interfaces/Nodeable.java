@@ -8,7 +8,7 @@ public interface Nodeable extends Executable, Validatable {
     @Override
     void execute();
 
-    // Critical method of determining when to run the node
+    // Critical method for determining when to run the node
     @Override
     boolean validate();
 
@@ -16,7 +16,7 @@ public interface Nodeable extends Executable, Validatable {
     String name();
 
     // Logger
-    default void log(String msg) {
+    default void log(Object msg) {
         Log.log(name() + " " + msg);
     }
 }
