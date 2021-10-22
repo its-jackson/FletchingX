@@ -254,12 +254,13 @@ public class Walking extends Node implements Workable {
         if (BankCache.isInitialized()) {
             if (!bankCacheContainsKnife()) {
                 if (!inventoryContainsKnife()) {
-                    if (BankCache.getStack(COIN_ID) < knifePrice) {
-                        if (!isAtLumbridgeBasement()) {
-                            setWalkToLumbridgeBasement(true);
-                            return isWalkToLumbridgeBasement();
-                        }
+                    if (!isAtLumbridgeBasement()) {
+                        setWalkToLumbridgeBasement(true);
+                        return isWalkToLumbridgeBasement();
                     }
+//                    if (BankCache.getStack(COIN_ID) < knifePrice) {
+//
+//                    }
                 }
             }
         }

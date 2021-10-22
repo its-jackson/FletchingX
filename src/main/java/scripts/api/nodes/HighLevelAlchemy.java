@@ -3,6 +3,7 @@ package scripts.api.nodes;
 import org.tribot.script.sdk.*;
 import org.tribot.script.sdk.cache.BankCache;
 import org.tribot.script.sdk.pricing.Pricing;
+import org.tribot.script.sdk.query.Query;
 import scripts.FletchingXVariables;
 import scripts.api.antiban.AntiBan;
 import scripts.api.interfaces.Workable;
@@ -30,7 +31,11 @@ public class HighLevelAlchemy extends Node implements Workable {
     @Override
     public synchronized void execute() {
         // incase of trolls trying to teleport you
-        Widgets.closeAll();
+        //Widgets.closeAll();
+
+        AntiBan.checkAntiBanTask(Query.gameObjects()
+                .findRandom()
+                .orElse(null));
 
         // downcast work
         Alchemy alchemyWork = (Alchemy) getWork();

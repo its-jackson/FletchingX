@@ -168,10 +168,13 @@ public class FletchingXVariables {
 
     @Override
     public String toString() {
-        return "PolymorphicFletcherVariables{" +
-                "settings=" + settings +
+        return "FletchingXVariables{" +
+                "gui=" + gui +
+                ", fxml=" + fxml +
+                ", settings=" + settings +
                 ", nodes=" + nodes +
                 ", waitTimes=" + waitTimes +
+                ", state='" + state + '\'' +
                 ", currentWork=" + currentWork +
                 ", start=" + start +
                 ", img=" + img +

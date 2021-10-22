@@ -12,8 +12,8 @@ import org.tribot.script.sdk.script.TribotScript;
 import org.tribot.script.sdk.script.TribotScriptManifest;
 import org.tribot.script.sdk.walking.GlobalWalking;
 import org.tribot.script.sdk.walking.adapter.DaxWalkerAdapter;
+import scripts.api.PolymorphicMousePaint;
 import scripts.api.antiban.AntiBan;
-import scripts.api.antiban.Seed;
 import scripts.api.enums.Resource;
 import scripts.api.enums.ResourceOption;
 import scripts.api.exceptions.ScriptCompleteException;
@@ -71,39 +71,39 @@ public class FletchingX implements TribotScript {
         }
 
         // create cutting
-        Work cuttingWork = new Cutting(
-                Resource.MAGIC_SHIELD,
-                ResourceOption.SELL_TO_GRAND_EXCHANGE,
-                RunescapeBank.GRAND_EXCHANGE,
-                10
-        );
-
-        // create stringing
-        Work stringingWork = new Stringing(
-                Resource.MAGIC_LONGBOW,
-                ResourceOption.FLETCH_THEN_ALCH,
-                RunescapeBank.GRAND_EXCHANGE,
-                5000
-        );
-
-        // create magic work
-        Work magicWork = new Alchemy(
-                Resource.YEW_LONGBOW,
-                null,
-                RunescapeBank.GRAND_EXCHANGE,
-                1000
-        );
+//        Work cuttingWork = new Cutting(
+//                Resource.MAGIC_SHIELD,
+//                ResourceOption.SELL_TO_GRAND_EXCHANGE,
+//                RunescapeBank.GRAND_EXCHANGE,
+//                10
+//        );
+//
+//        // create stringing
+//        Work stringingWork = new Stringing(
+//                Resource.MAGIC_LONGBOW,
+//                ResourceOption.FLETCH_THEN_ALCH,
+//                RunescapeBank.GRAND_EXCHANGE,
+//                5000
+//        );
+//
+//        // create magic work
+//        Work magicWork = new Alchemy(
+//                Resource.YEW_LONGBOW,
+//                null,
+//                RunescapeBank.GRAND_EXCHANGE,
+//                1000
+//        );
 
         // add test work
-        getVariables()
-                .getSettings()
-                .getWork()
-                .add(magicWork);
+//        getVariables()
+//                .getSettings()
+//                .getWork()
+//                .add(magicWork);
 
         // generate player preference
-        getVariables()
-                .getSettings()
-                .setAntiBanSeed(new Seed("Polymorphic"));
+//        getVariables()
+//                .getSettings()
+//                .setAntiBanSeed(new Seed("Polymorphic"));
 
         // execute work
         handleWork(getVariables().isStart());
@@ -138,7 +138,7 @@ public class FletchingX implements TribotScript {
                         nodes.add(new Fletching(work));
                         nodes.add(new Banking(work));
                         nodes.add(new Walking(work));
-                        nodes.add(new BuyingSellingGrandExchange(work));
+                        //nodes.add(new BuyingSellingGrandExchange(work));
                         nodes.add(new RetrieveKnifeFromLumbridgeBasement(work));
                         nodes.add(new WorldHop(work));
                     } else if (work instanceof Stringing) {
@@ -258,6 +258,9 @@ public class FletchingX implements TribotScript {
                 getWorker().incrementLevelCount();
             }
         });
+
+        // mouse paint
+        Painting.setMousePaint(new PolymorphicMousePaint(Color.RED, Color.RED, 24));
 
         // main script paint
         Painting.addPaint(g -> {

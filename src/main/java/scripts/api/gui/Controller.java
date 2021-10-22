@@ -592,7 +592,13 @@ public class Controller implements Initializable {
     @FXML
     @DoNotRename
     void onActionForumsLink() {
-
+        getHyperLinkForum().setOnAction(actionEvent -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://community.tribot.org/topic/84061-iron-man-support-fletching-x-abc2tribot-sdkwork-subsystemfatigue-subsystemhigh-alchingplayer-prefs/"));
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML

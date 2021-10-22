@@ -107,7 +107,7 @@ public class FletchingXSettings {
 
     @Override
     public String toString() {
-        return "PolymorphicFletcherSettings{" +
+        return "FletchingXSettings{" +
                 "repeat=" + repeat +
                 ", repeatShuffle=" + repeatShuffle +
                 ", doNotRepeat=" + doNotRepeat +

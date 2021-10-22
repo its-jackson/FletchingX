@@ -77,9 +77,10 @@ public class RetrieveKnifeFromLumbridgeBasement extends Node implements Workable
         // in lumbridge basement
         if (!bankCacheContainsKnife()) {
             if (!inventoryContainsKnife()) {
-                if (BankCache.getStack(COIN_ID) < knifePrice) {
-                    return isAtLumbridgeBasement();
-                }
+                return isAtLumbridgeBasement();
+//                if (BankCache.getStack(COIN_ID) < knifePrice) {
+//
+//                }
             }
         }
 

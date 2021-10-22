@@ -187,6 +187,7 @@ public class Fletching extends Node implements Workable {
 
     private void miniWork(String resourceName, Work work, Node node) {
         log("Making " + resourceName);
+        getVariables().setState("Making " + resourceName);
         log(work.getResource().getResourceName() + " remaining: " + work.getSuppliesToMake());
 
         if (node != null) {
