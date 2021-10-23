@@ -197,8 +197,8 @@ public class Banking extends Node implements Workable {
                 // do cutting
                 return shouldDepositResourcesCutting(getWork()) ||
                         shouldWithdrawLogs(getWork()) ||
-                        shouldWithdrawKnife(getWork()) ||
-                        shouldWithdrawCoinsKnife(getWork());
+                        shouldWithdrawKnife(getWork());
+//                        shouldWithdrawCoinsKnife(getWork());
             } else if (getWork() instanceof Stringing) {
                 // do stringing
                 return shouldDepositResourcesStringing(getWork()) ||

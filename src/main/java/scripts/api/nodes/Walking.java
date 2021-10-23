@@ -114,7 +114,7 @@ public class Walking extends Node implements Workable {
         if (getWork() instanceof Cutting) {
             return shouldWalkToBankAndCut(getWork()) ||
                     shouldWalkToLumbridgeBasement(getWork()) ||
-                    shouldWalkToGrandExchange(getWork()) ||
+//                    shouldWalkToGrandExchange(getWork()) ||
                     shouldWalkToBankInitialize(getWork());
         } else if (getWork() instanceof Stringing) {
             return shouldWalkToBankAndString(getWork()) ||
