@@ -25,6 +25,19 @@ public class FletchingXSettings {
 
     public FletchingXSettings() {}
 
+    public FletchingXSettings(FletchingXSettings settings) {
+        this.repeat = settings.isRepeat();
+        this.repeatShuffle = settings.isRepeatShuffle();
+        this.doNotRepeat = settings.isDoNotRepeat();
+        this.fatigue = settings.isFatigue();
+        this.microSleep = settings.isMicroSleep();
+        this.worldHopPlayerCount = settings.isWorldHopPlayerCount();
+        this.worldHopRandom = settings.isWorldHopRandom();
+        this.worldHopFactor = settings.getWorldHopFactor();
+        this.antiBanSeed = settings.getAntiBanSeed();
+        this.work = settings.getWork();
+    }
+
     public boolean isRepeat() {
         return repeat;
     }

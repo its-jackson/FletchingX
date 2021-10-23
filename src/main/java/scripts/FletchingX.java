@@ -1,6 +1,5 @@
 package scripts;
 
-import dax.api_lib.models.RunescapeBank;
 import org.apache.commons.lang3.time.StopWatch;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
@@ -10,16 +9,16 @@ import org.tribot.script.sdk.pricing.Pricing;
 import org.tribot.script.sdk.script.ScriptConfig;
 import org.tribot.script.sdk.script.TribotScript;
 import org.tribot.script.sdk.script.TribotScriptManifest;
+import org.tribot.script.sdk.util.ScriptSettings;
 import org.tribot.script.sdk.walking.GlobalWalking;
 import org.tribot.script.sdk.walking.adapter.DaxWalkerAdapter;
 import scripts.api.PolymorphicMousePaint;
 import scripts.api.antiban.AntiBan;
-import scripts.api.enums.Resource;
-import scripts.api.enums.ResourceOption;
 import scripts.api.exceptions.ScriptCompleteException;
 import scripts.api.gui.GUIFX;
 import scripts.api.nodes.*;
 import scripts.api.time.TimeElapse;
+import scripts.api.utilities.PolymorphicScriptSettings;
 import scripts.api.works.Cutting;
 import scripts.api.works.Alchemy;
 import scripts.api.works.Stringing;
@@ -32,6 +31,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * To do:
@@ -54,6 +54,8 @@ public class FletchingX implements TribotScript {
     private final FletchingXVariables variables = FletchingXVariables.get();
     private final Worker worker = Worker.get();
 
+
+
     @Override
     public void configure(ScriptConfig config) {
         config.setBreakHandlerEnabled(true);
@@ -62,8 +64,12 @@ public class FletchingX implements TribotScript {
 
     @Override
     public void execute(String s) {
-        // load gui
-        loadGraphicalUserInterface();
+        if (parseArgument(s)) {
+            getVariables().setStart(true);
+        } else {
+            // load gui
+            loadGraphicalUserInterface();
+        }
 
         // start stop watch
         if (stop_watch.isStopped()) {
@@ -358,6 +364,27 @@ public class FletchingX implements TribotScript {
         Log.log(String.format("Total Level's Gained: %d Levels", getWorker().getLevelCount()));
         Log.log(String.format("Until next time %s, take care.", Worker.getUserName()));
         throw new ScriptCompleteException("", new Error(), false, false);
+    }
+
+    private boolean parseArgument(String arg) {
+        if (arg.isBlank() || arg.isEmpty()) {
+            return false;
+        }
+
+        ScriptSettings settingsHandler = new PolymorphicScriptSettings()
+                .getSettings();
+
+        Optional<FletchingXSettings> settingsOptional = settingsHandler.load(arg, FletchingXSettings.class);
+
+        if (settingsOptional.isPresent()) {
+            Log.log(String.format("Loaded file: %s", arg));
+            getVariables().setSettings(settingsOptional.get());
+            Log.log(String.format("Loaded settings successfully: %s", getVariables().getSettings()));
+            return true;
+        } else {
+            Log.log("Incorrect argument parsed. You must create settings via GUI first.");
+            return false;
+        }
     }
 
     private void waitUntilInGame() {
