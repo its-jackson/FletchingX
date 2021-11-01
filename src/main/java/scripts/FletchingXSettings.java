@@ -1,6 +1,5 @@
 package scripts;
 
-import scripts.api.antiban.Seed;
 import scripts.api.works.Work;
 
 import java.util.LinkedList;
@@ -19,8 +18,6 @@ public class FletchingXSettings {
     private boolean worldHopRandom;
     private double worldHopFactor;
 
-    private Seed antiBanSeed;
-
     private List<Work> work = new LinkedList<>();
 
     public FletchingXSettings() {}
@@ -34,7 +31,6 @@ public class FletchingXSettings {
         this.worldHopPlayerCount = settings.isWorldHopPlayerCount();
         this.worldHopRandom = settings.isWorldHopRandom();
         this.worldHopFactor = settings.getWorldHopFactor();
-        this.antiBanSeed = settings.getAntiBanSeed();
         this.work = settings.getWork();
     }
 
@@ -60,14 +56,6 @@ public class FletchingXSettings {
 
     public void setDoNotRepeat(boolean doNotRepeat) {
         this.doNotRepeat = doNotRepeat;
-    }
-
-    public Seed getAntiBanSeed() {
-        return antiBanSeed;
-    }
-
-    public void setAntiBanSeed(Seed antiBanSeed) {
-        this.antiBanSeed = antiBanSeed;
     }
 
     public boolean isFatigue() {
@@ -129,7 +117,6 @@ public class FletchingXSettings {
                 ", worldHopPlayerCount=" + worldHopPlayerCount +
                 ", worldHopRandom=" + worldHopRandom +
                 ", worldHopFactor=" + worldHopFactor +
-                ", antiBanSeed=" + antiBanSeed +
                 ", work=" + work +
                 '}';
     }

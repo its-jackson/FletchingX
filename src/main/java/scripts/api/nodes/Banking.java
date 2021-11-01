@@ -1,6 +1,7 @@
 package scripts.api.nodes;
 
 import org.tribot.script.sdk.*;
+import org.tribot.script.sdk.antiban.PlayerPreferences;
 import org.tribot.script.sdk.cache.BankCache;
 import scripts.FletchingXVariables;
 import scripts.api.interfaces.Workable;
@@ -49,10 +50,16 @@ public class Banking extends Node implements Workable {
 
     @Override
     public synchronized void execute() {
-        final int player_pref = getVariables()
-                .getSettings()
-                .getAntiBanSeed()
-                .getPreference();
+        // 40 mean because we want the average to be around that
+        // 80 standard deviation we want the preferences to be spread out
+        final int player_pref =
+                PlayerPreferences.preference("org.tribot.script.sdk.Bank", g -> g.normal(
+                                1,
+                                100,
+                                40,
+                                80
+                        )
+                );
 
         //log("Player preference = " + player_pref);
 
@@ -245,16 +252,14 @@ public class Banking extends Node implements Workable {
         boolean isShield = cuttingWork
                 .getResource()
                 .getResourceName()
-                .contains("shield")
-                ;
+                .contains("shield");
 
         if (inventoryContainsKnife()) {
             if (work.inventoryContainsResources()) {
                 if (isShield) {
                     int inventoryCount = cuttingWork
                             .findRequiredLogs()
-                            .size()
-                            ;
+                            .size();
                     if (inventoryCount < 2) {
                         setDepositCutting(true);
                         return isDepositCutting();

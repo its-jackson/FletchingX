@@ -1,6 +1,7 @@
 package scripts.api.nodes;
 
 import org.tribot.script.sdk.*;
+import org.tribot.script.sdk.antiban.PlayerPreferences;
 import org.tribot.script.sdk.cache.BankCache;
 import org.tribot.script.sdk.query.Query;
 import org.tribot.script.sdk.types.InventoryItem;
@@ -38,15 +39,14 @@ public class Fletching extends Node implements Workable {
 
     @Override
     public synchronized void execute() {
-        final int player_pref = getVariables()
-                .getSettings()
-                .getAntiBanSeed()
-                .getPreference()
-                ;
-
-        //log("Player preference = " + player_pref);
-
-        //Widgets.closeAll();
+        final int player_pref =
+                PlayerPreferences.preference("org.tribot.script.sdk.MakeScreen", g -> g.normal(
+                                1,
+                                100,
+                                40,
+                                80
+                        )
+                );
 
         if (getWork() instanceof Cutting) {
             // perform cutting work

@@ -15,7 +15,6 @@ import javafx.stage.FileChooser;
 import org.tribot.script.sdk.util.ScriptSettings;
 import scripts.FletchingXSettings;
 import scripts.FletchingXVariables;
-import scripts.api.antiban.Seed;
 import scripts.api.enums.Resource;
 import scripts.api.enums.ResourceOption;
 import scripts.api.enums.WorkType;
@@ -60,10 +59,6 @@ public class Controller implements Initializable {
 
     @FXML
     @DoNotRename
-    private Button buttonGenerateRandomSeed;
-
-    @FXML
-    @DoNotRename
     private Button buttonGenerateRandomTime;
 
     @FXML
@@ -93,10 +88,6 @@ public class Controller implements Initializable {
     @FXML
     @DoNotRename
     private CheckBox checkBoxRandomWorldHop;
-
-    @FXML
-    @DoNotRename
-    private CheckBox checkBoxSpecificWorld;
 
     @FXML
     @DoNotRename
@@ -208,26 +199,6 @@ public class Controller implements Initializable {
 
     @FXML
     @DoNotRename
-    private Label labelSeedHeader;
-
-    @FXML
-    @DoNotRename
-    private Label labelSeedSubHeader;
-
-    @FXML
-    @DoNotRename
-    private Label labelSeedSubHeader2;
-
-    @FXML
-    @DoNotRename
-    private Label labelSeedSubHeader3;
-
-    @FXML
-    @DoNotRename
-    private Label labelSeedSubSystem;
-
-    @FXML
-    @DoNotRename
     private Label labelSlogan;
 
     @FXML
@@ -245,10 +216,6 @@ public class Controller implements Initializable {
     @FXML
     @DoNotRename
     private Label labelWorldSubHeader;
-
-    @FXML
-    @DoNotRename
-    private Label labelWorldSubHeader2;
 
     @FXML
     @DoNotRename
@@ -316,14 +283,6 @@ public class Controller implements Initializable {
 
     @FXML
     @DoNotRename
-    private TextField textFieldAntiBanSeed;
-
-    @FXML
-    @DoNotRename
-    private TextField textFieldSpecificWorld;
-
-    @FXML
-    @DoNotRename
     private TextField textFieldStoppingCondition;
 
     @Override
@@ -367,9 +326,6 @@ public class Controller implements Initializable {
         // on action checkbox world hop player count
         onActionCheckBoxWorldHopPlayerCount();
 
-        // on action specific world
-        onActionCheckBoxSpecificWorld();
-
         // on action choice box resource
         onActionChoiceBoxWorkType();
 
@@ -380,8 +336,6 @@ public class Controller implements Initializable {
         onActionButtonGenerateRandomLevel();
         // on action
         onActionButtonGenerateRandomTime();
-        // on action
-        onActionButtonGenerateRandomSeed();
         // on action
         onActionRadioButtonTime();
         // on action
@@ -555,14 +509,6 @@ public class Controller implements Initializable {
 
     @FXML
     @DoNotRename
-    void onActionButtonGenerateRandomSeed() {
-        getButtonGenerateRandomSeed().setOnAction(actionEvent -> {
-            getTextFieldAntiBanSeed().setText(Seed.generateRandomSeed().getSeed());
-        });
-    }
-
-    @FXML
-    @DoNotRename
     void onActionButtonGenerateRandomLevel() {
         getButtonGenerateRandomLevel().setOnAction(actionEvent -> {
             int randomLevel;
@@ -665,18 +611,6 @@ public class Controller implements Initializable {
 
     @FXML
     @DoNotRename
-    private void onActionCheckBoxSpecificWorld() {
-        getCheckBoxSpecificWorld().setOnAction(actionEvent -> {
-            if (getCheckBoxSpecificWorld().isSelected()) {
-                getTextFieldSpecificWorld().setDisable(false);
-            } else {
-                getTextFieldSpecificWorld().setDisable(true);
-            }
-        });
-    }
-
-    @FXML
-    @DoNotRename
     private void onActionChoiceBoxWorkType() {
         getChoiceBoxWorkType().setOnAction(actionEvent -> {
             getChoiceBoxResourceLocation().getItems().clear();
@@ -720,7 +654,6 @@ public class Controller implements Initializable {
 
             settings.setFatigue(getCheckBoxFatigueSystem().isSelected());
             settings.setMicroSleep(getCheckBoxMicroSleep().isSelected());
-            settings.setAntiBanSeed(new Seed(getTextFieldAntiBanSeed().getText()));
             settings.setWorldHopPlayerCount(getCheckBoxWorldHopPlayerCount().isSelected());
             settings.setWorldHopRandom(getCheckBoxRandomWorldHop().isSelected());
             settings.setWorldHopFactor(getSpinnerWorldHopPlayerCount().getValue());
@@ -778,7 +711,6 @@ public class Controller implements Initializable {
 
                             getCheckBoxFatigueSystem().setSelected(settings.isFatigue());
                             getCheckBoxMicroSleep().setSelected(settings.isMicroSleep());
-                            getTextFieldAntiBanSeed().setText(settings.getAntiBanSeed().getSeed());
 
                             getCheckBoxWorldHopPlayerCount().setSelected(settings.isWorldHopPlayerCount());
                             getCheckBoxRandomWorldHop().setSelected(settings.isWorldHopRandom());
@@ -805,7 +737,6 @@ public class Controller implements Initializable {
 
             settings.setFatigue(getCheckBoxFatigueSystem().isSelected());
             settings.setMicroSleep(getCheckBoxMicroSleep().isSelected());
-            settings.setAntiBanSeed(new Seed(getTextFieldAntiBanSeed().getText()));
 
             settings.setWorldHopPlayerCount(getCheckBoxWorldHopPlayerCount().isSelected());
             settings.setWorldHopRandom(getCheckBoxRandomWorldHop().isSelected());
@@ -1056,14 +987,6 @@ public class Controller implements Initializable {
         this.buttonGenerateRandomLevel = buttonGenerateRandomLevel;
     }
 
-    public Button getButtonGenerateRandomSeed() {
-        return buttonGenerateRandomSeed;
-    }
-
-    public void setButtonGenerateRandomSeed(Button buttonGenerateRandomSeed) {
-        this.buttonGenerateRandomSeed = buttonGenerateRandomSeed;
-    }
-
     public Button getButtonGenerateRandomTime() {
         return buttonGenerateRandomTime;
     }
@@ -1126,14 +1049,6 @@ public class Controller implements Initializable {
 
     public void setCheckBoxRandomWorldHop(CheckBox checkBoxRandomWorldHop) {
         this.checkBoxRandomWorldHop = checkBoxRandomWorldHop;
-    }
-
-    public CheckBox getCheckBoxSpecificWorld() {
-        return checkBoxSpecificWorld;
-    }
-
-    public void setCheckBoxSpecificWorld(CheckBox checkBoxSpecificWorld) {
-        this.checkBoxSpecificWorld = checkBoxSpecificWorld;
     }
 
     public CheckBox getCheckBoxWorldHopPlayerCount() {
@@ -1352,46 +1267,6 @@ public class Controller implements Initializable {
         this.labelResourceOption = labelResourceOption;
     }
 
-    public Label getLabelSeedHeader() {
-        return labelSeedHeader;
-    }
-
-    public void setLabelSeedHeader(Label labelSeedHeader) {
-        this.labelSeedHeader = labelSeedHeader;
-    }
-
-    public Label getLabelSeedSubHeader() {
-        return labelSeedSubHeader;
-    }
-
-    public void setLabelSeedSubHeader(Label labelSeedSubHeader) {
-        this.labelSeedSubHeader = labelSeedSubHeader;
-    }
-
-    public Label getLabelSeedSubHeader2() {
-        return labelSeedSubHeader2;
-    }
-
-    public void setLabelSeedSubHeader2(Label labelSeedSubHeader2) {
-        this.labelSeedSubHeader2 = labelSeedSubHeader2;
-    }
-
-    public Label getLabelSeedSubHeader3() {
-        return labelSeedSubHeader3;
-    }
-
-    public void setLabelSeedSubHeader3(Label labelSeedSubHeader3) {
-        this.labelSeedSubHeader3 = labelSeedSubHeader3;
-    }
-
-    public Label getLabelSeedSubSystem() {
-        return labelSeedSubSystem;
-    }
-
-    public void setLabelSeedSubSystem(Label labelSeedSubSystem) {
-        this.labelSeedSubSystem = labelSeedSubSystem;
-    }
-
     public Label getLabelSlogan() {
         return labelSlogan;
     }
@@ -1430,14 +1305,6 @@ public class Controller implements Initializable {
 
     public void setLabelWorldSubHeader(Label labelWorldSubHeader) {
         this.labelWorldSubHeader = labelWorldSubHeader;
-    }
-
-    public Label getLabelWorldSubHeader2() {
-        return labelWorldSubHeader2;
-    }
-
-    public void setLabelWorldSubHeader2(Label labelWorldSubHeader2) {
-        this.labelWorldSubHeader2 = labelWorldSubHeader2;
     }
 
     public Label getLabelWorldSubHeader3() {
@@ -1566,22 +1433,6 @@ public class Controller implements Initializable {
 
     public void setTextFieldAmountToMake(TextField textFieldAmountToMake) {
         this.textFieldAmountToMake = textFieldAmountToMake;
-    }
-
-    public TextField getTextFieldAntiBanSeed() {
-        return textFieldAntiBanSeed;
-    }
-
-    public void setTextFieldAntiBanSeed(TextField textFieldAntiBanSeed) {
-        this.textFieldAntiBanSeed = textFieldAntiBanSeed;
-    }
-
-    public TextField getTextFieldSpecificWorld() {
-        return textFieldSpecificWorld;
-    }
-
-    public void setTextFieldSpecificWorld(TextField textFieldSpecificWorld) {
-        this.textFieldSpecificWorld = textFieldSpecificWorld;
     }
 
     public TextField getTextFieldStoppingCondition() {

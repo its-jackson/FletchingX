@@ -42,7 +42,8 @@ public class FletchingXVariables {
     private final Color progress_colour_background = new Color(0, 0, 0, 0.8F);
     private final Color paint_main_colour = new Color(200, 200, 200); // dark green // 0, 100, 0
 
-    public FletchingXVariables() {}
+    // cannot instantiate
+    private FletchingXVariables() {}
 
     /**
      * Return an image from the internet.

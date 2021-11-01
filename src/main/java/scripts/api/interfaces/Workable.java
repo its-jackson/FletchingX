@@ -303,33 +303,19 @@ public interface Workable {
             return;
         }
 
-        // 30 percent of players will use this method
-        if (preference > 70) {
+        // 50 percent of players will use this method
+        if (preference > 50) {
             items.stream()
                     .findAny()
                     .ifPresent(combine::useOn);
-//            boolean clickResult = combine.click(action);
-//
-//            if (clickResult) {
-//                items.stream()
-//                        .findAny()
-//                        .ifPresent(inventoryItem -> inventoryItem.click(action));
-//                return true;
-//            }
+
         } else {
-            // 70 percent of players will use this method
+
+            // 50 percent of players will use this method
             items.stream()
                     .findAny()
                     .ifPresent(inventoryItem -> inventoryItem.useOn(combine));
-
-//            boolean waitResult = Waiting.waitUntil(3000, () -> Inventory.getSelected().isPresent());
-//
-//            if (waitResult) {
-//                return combine.click(action);
-//            }
         }
-
-        //return false;
     }
 
     // recreating because I know how to do it too
@@ -357,11 +343,11 @@ public interface Workable {
     }
 
     default boolean openBank(int preference) {
-        // 30 percent of players will use this method
-        if (preference > 70) {
+        // 50 percent of players will use this method
+        if (preference > 50) {
             return Bank.open();
         } else {
-            // 70 percent of players will use this method
+            // 50 percent of players will use this method
             Optional<Npc> banker = Query.npcs()
                     .nameContains("Bank", "Banker")
                     .maxDistance(7)
@@ -380,6 +366,7 @@ public interface Workable {
                 }
 
                 return clickResult;
+
             } else {
                 return Bank.open();
             }
@@ -388,11 +375,11 @@ public interface Workable {
 
     default boolean closeBank(int preference) {
         BankCache.update();
-        // 30 percent of players will use this method
-        if (preference > 70) {
+        // 50 percent of players will use this method
+        if (preference > 50) {
             return Bank.close();
         } else {
-            // 70 percent of players will use this method
+            // 50 percent of players will use this method
             if (isEscapeClose()) {
                 Keyboard.pressEscape();
                 return Waiting.waitUntil(2000, () -> !Bank.isOpen());
@@ -408,31 +395,18 @@ public interface Workable {
 
         if (GameTab.OPTIONS.open()) {
             Optional<Widget> allSettings = Widgets.findWhereAction("All settings");
-
             allSettings.ifPresent(widget -> widget.click("All settings"));
-
             Waiting.wait(1000);
-
             Optional<Widget> searchWidget = Widgets.get(134, 10);
-
             Waiting.wait(1000);
-
             searchWidget.ifPresent(widget -> widget.click("Search"));
-
             Waiting.wait(1000);
-
             Keyboard.typeString("esc");
-
             Waiting.wait(1000);
-
             Optional<Widget> escapeWidget = Widgets.get(134, 18, 1);
-
             escapeWidget.ifPresent(widget -> widget.click("Toggle"));
-
             Waiting.wait(1000);
-
             Widgets.closeAll();
-
             return isEscapeClose();
         }
 
@@ -462,7 +436,4 @@ public interface Workable {
     default boolean bankCacheContains(int itemID) {
         return BankCache.getStack(itemID) > 0;
     }
-
-    // static methods below
-
 }

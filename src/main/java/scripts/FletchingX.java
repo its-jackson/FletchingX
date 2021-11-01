@@ -54,8 +54,6 @@ public class FletchingX implements TribotScript {
     private final FletchingXVariables variables = FletchingXVariables.get();
     private final Worker worker = Worker.get();
 
-
-
     @Override
     public void configure(ScriptConfig config) {
         config.setBreakHandlerEnabled(true);
@@ -65,9 +63,10 @@ public class FletchingX implements TribotScript {
     @Override
     public void execute(String s) {
         if (parseArgument(s)) {
+            // parse args
             getVariables().setStart(true);
         } else {
-            // load gui
+            // load gui, cannot parse args
             loadGraphicalUserInterface();
         }
 
@@ -75,41 +74,6 @@ public class FletchingX implements TribotScript {
         if (stop_watch.isStopped()) {
             stop_watch.start();
         }
-
-        // create cutting
-//        Work cuttingWork = new Cutting(
-//                Resource.MAGIC_SHIELD,
-//                ResourceOption.SELL_TO_GRAND_EXCHANGE,
-//                RunescapeBank.GRAND_EXCHANGE,
-//                10
-//        );
-//
-//        // create stringing
-//        Work stringingWork = new Stringing(
-//                Resource.MAGIC_LONGBOW,
-//                ResourceOption.FLETCH_THEN_ALCH,
-//                RunescapeBank.GRAND_EXCHANGE,
-//                5000
-//        );
-//
-//        // create magic work
-//        Work magicWork = new Alchemy(
-//                Resource.YEW_LONGBOW,
-//                null,
-//                RunescapeBank.GRAND_EXCHANGE,
-//                1000
-//        );
-
-        // add test work
-//        getVariables()
-//                .getSettings()
-//                .getWork()
-//                .add(magicWork);
-
-        // generate player preference
-//        getVariables()
-//                .getSettings()
-//                .setAntiBanSeed(new Seed("Polymorphic"));
 
         // execute work
         handleWork(getVariables().isStart());
@@ -190,8 +154,7 @@ public class FletchingX implements TribotScript {
     }
 
     private void loadGraphicalUserInterface() {
-        // run gui
-
+        // load fxml
         try {
             getVariables().setFxml(new URL("https://jacksonjohnson.ca/fletchingx/fletchingx.fxml"));
         } catch (MalformedURLException e) {
@@ -210,8 +173,8 @@ public class FletchingX implements TribotScript {
     private void setup() {
         // set anti-ban variables
         AntiBan.create();
-        AntiBan.setMicroSleep(true);
-        AntiBan.setHumanFatigue(true);
+        AntiBan.setMicroSleep(getVariables().getSettings().isMicroSleep());
+        AntiBan.setHumanFatigue(getVariables().getSettings().isFatigue());
         AntiBan.setPrintDebug(true);
         General.useAntiBanCompliance(true);
 
