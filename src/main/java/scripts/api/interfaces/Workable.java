@@ -318,18 +318,9 @@ public interface Workable {
         }
     }
 
-    // recreating because I know how to do it too
     default boolean interact(Interactable entity, String action) {
-        boolean walkResult;
-
-        if (!entity.isVisible()) {
-            boolean focusResult = entity.adjustCameraTo();
-            if (!focusResult) {
-                walkResult = walkToTile(entity.getTile());
-                if (walkResult) {
-                    Waiting.waitUntil(entity::isVisible);
-                }
-            }
+        if (entity == null || action == null) {
+            return false;
         }
 
         List<String> actions = ((Actionable)entity).getActions();
