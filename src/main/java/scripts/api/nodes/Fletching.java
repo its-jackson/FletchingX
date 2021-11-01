@@ -123,7 +123,7 @@ public class Fletching extends Node implements Workable {
     }
 
     private boolean make(int preference, Work work) {
-        if (preference > 70) {
+        if (preference > 50) {
             MakeScreen.setSelectPreference(MakeScreen.SelectPreference.MOUSE);
         } else {
             MakeScreen.setSelectPreference(MakeScreen.SelectPreference.KEYS);
@@ -139,8 +139,8 @@ public class Fletching extends Node implements Workable {
                     .getResourceName()
                     .toLowerCase(Locale.ROOT);
 
-            log("Item available to make: " + itemAvailable);
-            log("Item to make: " + itemToMake);
+//            log("Item available to make: " + itemAvailable);
+//            log("Item to make: " + itemToMake);
 
             return itemToMake.contains(itemAvailable);
         });

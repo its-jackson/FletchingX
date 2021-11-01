@@ -178,13 +178,16 @@ public class FletchingX implements TribotScript {
         AntiBan.setPrintDebug(true);
         General.useAntiBanCompliance(true);
 
-        Log.log("ABC2: " + General.useAntiBanCompliance());
-        Log.log("Micro sleep: " + AntiBan.getMicroSleep());
-        Log.log("Fatigue: " + AntiBan.getHumanFatigue());
-        Log.log("Print Debug: " + AntiBan.getPrintDebug());
+//        Log.log("ABC2: " + General.useAntiBanCompliance());
+//        Log.log("Micro sleep: " + AntiBan.getMicroSleep());
+//        Log.log("Fatigue: " + AntiBan.getHumanFatigue());
+//        Log.log("Print Debug: " + AntiBan.getPrintDebug());
 
         // set global walking engine
         GlobalWalking.setEngine(new DaxWalkerAdapter("sub_JK3knXqxVGZtGR", "74aa47de-1cb1-4ee1-a8c9-5bae53c70b22"));
+
+        // on end listener
+        ScriptListening.addEndingListener(this::end);
 
         // server message listener
         MessageListening.addServerMessageListener(message -> {
@@ -317,7 +320,6 @@ public class FletchingX implements TribotScript {
     }
 
     private void end() {
-        // thank you mr. gosling for string.format()
         Log.log(String.format("End of script statistics for: %s", Worker.getUserName()));
         Log.log(String.format("Total Time Ran: %s", Timing.msToString(stop_watch.getTime())));
         Log.log(String.format("Total Resources Made: %s", getWorker().getResourceCount()));
