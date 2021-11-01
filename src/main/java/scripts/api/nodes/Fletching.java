@@ -39,8 +39,16 @@ public class Fletching extends Node implements Workable {
 
     @Override
     public synchronized void execute() {
-        final int player_pref =
+        final int player_pref_make_screen =
                 PlayerPreferences.preference("org.tribot.script.sdk.MakeScreen", g -> g.normal(
+                                1,
+                                100,
+                                40,
+                                80
+                        )
+                );
+        final int player_pref_use_on =
+                PlayerPreferences.preference("org.tribot.script.sdk.types.InventoryItem", g -> g.normal(
                                 1,
                                 100,
                                 40,
@@ -60,7 +68,7 @@ public class Fletching extends Node implements Workable {
             Optional<InventoryItem> knife = findInventoryKnife();
 
             // combine knife and logs
-            knife.ifPresent(k -> combineItem(k, logs, player_pref));
+            knife.ifPresent(k -> combineItem(k, logs, player_pref_use_on));
         } else {
             // perform stringing work
             log("Utilizing " + Strings.BOW_STRING.getStringName());
@@ -75,7 +83,7 @@ public class Fletching extends Node implements Workable {
             // combine bowstring and bows
             bowStrings.stream()
                     .findAny()
-                    .ifPresent(s -> combineItem(s, bows, player_pref));
+                    .ifPresent(s -> combineItem(s, bows, player_pref_use_on));
         }
 
         // wait until make interface is on screen
@@ -86,7 +94,7 @@ public class Fletching extends Node implements Workable {
             log("Make screen is open");
             getVariables().setState("Make screen is open");
 
-            boolean makeResult = make(player_pref, getWork());
+            boolean makeResult = make(player_pref_make_screen, getWork());
 
             if (makeResult) {
                 // wait until we are animating
