@@ -30,9 +30,6 @@ public class HighLevelAlchemy extends Node implements Workable {
 
     @Override
     public synchronized void execute() {
-        // incase of trolls trying to teleport you
-        //Widgets.closeAll();
-
         AntiBan.checkAntiBanTask(Query.gameObjects()
                 .findRandom()
                 .orElse(null));
@@ -127,7 +124,6 @@ public class HighLevelAlchemy extends Node implements Workable {
     }
 
     private boolean shouldLowLevelAlchemy(Work work) {
-
         return false;
     }
 

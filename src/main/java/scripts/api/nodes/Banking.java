@@ -52,12 +52,21 @@ public class Banking extends Node implements Workable {
     public synchronized void execute() {
         // 40 mean because we want the average to be around that
         // 80 standard deviation we want the preferences to be spread out
-        final int player_pref =
-                PlayerPreferences.preference("org.tribot.script.sdk.Bank", g -> g.normal(
+        final int player_pref_open_bank =
+                PlayerPreferences.preference("org.tribot.script.sdk.Bank.open", g -> g.normal(
                                 1,
                                 100,
-                                40,
+                                45,
                                 80
+                        )
+                );
+
+        final int player_pref_close_bank =
+                PlayerPreferences.preference("org.tribot.script.sdk.Bank.close", g -> g.normal(
+                                1,
+                                100,
+                                30,
+                                70
                         )
                 );
 
@@ -66,7 +75,7 @@ public class Banking extends Node implements Workable {
         // open bank
         if (!Bank.isOpen()) {
             //Widgets.closeAll();
-            if (openBank(player_pref)) {
+            if (openBank(player_pref_open_bank)) {
                 log("Opened bank");
                 getVariables().setState("Opened bank");
             }
@@ -100,7 +109,7 @@ public class Banking extends Node implements Workable {
                         if (withdrawLogsResult) {
                             log("Withdrew " + ((Cutting) getWork()).getLogRequired().getLogName());
                             getVariables().setState("Withdrew " + ((Cutting) getWork()).getLogRequired().getLogName());
-                            boolean closeBankResult = closeBank(player_pref);
+                            boolean closeBankResult = closeBank(player_pref_close_bank);
                             if (closeBankResult) {
                                 log("Closed bank");
                                 getVariables().setState("Closed bank");
@@ -156,7 +165,7 @@ public class Banking extends Node implements Workable {
                         if (withdrawResult) {
                             log("Withdrew " + ((Stringing) getWork()).getBowString().getStringName());
                             getVariables().setState("Withdrew " + ((Stringing) getWork()).getBowString().getStringName());
-                            boolean closeBankResult = closeBank(player_pref);
+                            boolean closeBankResult = closeBank(player_pref_close_bank);
                             if (closeBankResult) {
                                 log("Closed bank");
                                 getVariables().setState("Closed bank");

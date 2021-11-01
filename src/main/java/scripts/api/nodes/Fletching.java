@@ -40,19 +40,19 @@ public class Fletching extends Node implements Workable {
     @Override
     public synchronized void execute() {
         final int player_pref_make_screen =
-                PlayerPreferences.preference("org.tribot.script.sdk.MakeScreen", g -> g.normal(
+                PlayerPreferences.preference("org.tribot.script.sdk.MakeScreen.makeAll", g -> g.normal(
                                 1,
                                 100,
-                                40,
-                                80
+                                30,
+                                60
                         )
                 );
         final int player_pref_use_on =
-                PlayerPreferences.preference("org.tribot.script.sdk.types.InventoryItem", g -> g.normal(
+                PlayerPreferences.preference("org.tribot.script.sdk.types.InventoryItem.useOn", g -> g.normal(
                                 1,
                                 100,
-                                40,
-                                80
+                                50,
+                                70
                         )
                 );
 
