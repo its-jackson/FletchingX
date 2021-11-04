@@ -13,6 +13,10 @@ import scripts.api.time.TimeElapse;
 
 import java.util.List;
 
+/**
+ * Purpose of class: Subclass for controlling the Alchemy work
+ */
+
 public class Alchemy extends Work {
 
     // required staff

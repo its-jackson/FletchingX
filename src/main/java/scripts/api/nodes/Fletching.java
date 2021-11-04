@@ -23,8 +23,6 @@ import java.util.Optional;
 
 public class Fletching extends Node implements Workable {
 
-    private final long start_time = System.currentTimeMillis();
-
     private final FletchingXVariables variables = FletchingXVariables.get();
 
     private Node worldHopNode;
@@ -39,6 +37,8 @@ public class Fletching extends Node implements Workable {
 
     @Override
     public synchronized void execute() {
+        final long start_time = System.currentTimeMillis();
+
         final int player_pref_make_screen =
                 PlayerPreferences.preference("org.tribot.script.sdk.MakeScreen.makeAll", g -> g.normal(
                                 1,
@@ -105,7 +105,7 @@ public class Fletching extends Node implements Workable {
         }
 
         // Generate the trackers
-        AntiBan.generateTrackers((int) (System.currentTimeMillis() - this.start_time), false);
+        AntiBan.generateTrackers((int) (System.currentTimeMillis() - start_time), false);
     }
 
     @Override

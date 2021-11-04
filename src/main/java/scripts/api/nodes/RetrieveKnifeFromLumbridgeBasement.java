@@ -11,6 +11,10 @@ import scripts.api.works.Work;
 
 import java.util.Optional;
 
+/**
+ * Purpose of class: Will actually retrieve a knife if the player does not have one.
+ */
+
 public class RetrieveKnifeFromLumbridgeBasement extends Node implements Workable {
 
     private final FletchingXVariables variables = FletchingXVariables.get();

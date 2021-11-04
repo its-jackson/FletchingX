@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Purpose of class: Store the script variables such as the scripting settings and current work
+ */
+
 public class FletchingXVariables {
 
     private final static FletchingXVariables instance = new FletchingXVariables();

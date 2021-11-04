@@ -12,6 +12,10 @@ import scripts.api.time.TimeElapse;
 
 import java.util.List;
 
+/**
+ * Purpose of class: Subclass for controlling the Stringing work
+ */
+
 public class Stringing extends Work {
 
     // the unstrung bow required for the work

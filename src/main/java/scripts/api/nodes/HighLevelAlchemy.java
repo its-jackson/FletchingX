@@ -11,9 +11,11 @@ import scripts.api.works.Alchemy;
 import scripts.api.works.Work;
 import scripts.api.works.Worker;
 
-public class HighLevelAlchemy extends Node implements Workable {
+/**
+ * Purpose of class: Perform the high level alchemy spell on the desired resource specified by the current work
+ */
 
-    private final long start_time = System.currentTimeMillis();
+public class HighLevelAlchemy extends Node implements Workable {
 
     private final FletchingXVariables variables = FletchingXVariables.get();
     private final Worker worker = Worker.get();
@@ -30,6 +32,8 @@ public class HighLevelAlchemy extends Node implements Workable {
 
     @Override
     public synchronized void execute() {
+        final long start_time = System.currentTimeMillis();
+
         AntiBan.checkAntiBanTask(Query.gameObjects()
                 .findRandom()
                 .orElse(null));
@@ -90,7 +94,7 @@ public class HighLevelAlchemy extends Node implements Workable {
                 });
 
         // Generate the trackers
-        AntiBan.generateTrackers((int) (System.currentTimeMillis() - this.start_time), false);
+        AntiBan.generateTrackers((int) (System.currentTimeMillis() - start_time), false);
     }
 
     @Override

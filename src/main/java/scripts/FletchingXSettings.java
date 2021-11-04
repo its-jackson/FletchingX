@@ -5,6 +5,10 @@ import scripts.api.works.Work;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Purpose of class: Store the scripting settings that determine core functionality
+ */
+
 public class FletchingXSettings {
 
     private boolean repeat;
