@@ -128,7 +128,7 @@ public class FletchingX implements TribotScript {
                     // loop while the work is validated
                     while (!work.validate()) {
                         // sleep
-                        Log.log(String.format("Reaction time: %s milliseconds", AntiBan.sleep(getVariables().getWaitTimes())));
+                        AntiBan.sleep(getVariables().getWaitTimes());
 
                         // execute the valid node within the given work
                         nodes.stream()
