@@ -328,6 +328,7 @@ public class FletchingX implements TribotScript {
         Log.log(String.format("Total Magic Experience Gained: %,d XP", getWorker().calculateMagicExperienceGained()));
         Log.log(String.format("Total Level's Gained: %d Levels", getWorker().getLevelCount()));
         Log.log(String.format("Until next time %s, take care.", Worker.getUserName()));
+        Painting.clearPaint();
         throw new ScriptCompleteException("", new Error(), false, false);
     }
 
