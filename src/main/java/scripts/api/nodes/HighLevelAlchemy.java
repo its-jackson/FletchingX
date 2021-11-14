@@ -35,7 +35,7 @@ public class HighLevelAlchemy extends Node implements Workable {
         final long startTime = System.currentTimeMillis();
 
         // before alching close all open widgets
-        closeAllOpenWidgets();
+        Bank.close();
 
         AntiBan.checkAntiBanTask(Query.gameObjects()
                 .findRandom()
