@@ -404,6 +404,18 @@ public interface Workable {
         return false;
     }
 
+    default void closeAllOpenWidgets() {
+        boolean isWidgetOpen = Query.widgets()
+                .isVisible()
+                .isAny();
+
+        if (!isWidgetOpen) {
+            return;
+        }
+
+        Widgets.closeAll();
+    }
+
     default boolean isEscapeClose() {
         return GameState.getVarbit(ESC_VARBIT) > 0;
     }

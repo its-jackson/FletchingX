@@ -37,7 +37,9 @@ public class Fletching extends Node implements Workable {
 
     @Override
     public synchronized void execute() {
-        final long start_time = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
+
+        closeAllOpenWidgets();
 
         final int player_pref_make_screen =
                 PlayerPreferences.preference("org.tribot.script.sdk.MakeScreen.makeAll", g -> g.normal(
@@ -105,7 +107,7 @@ public class Fletching extends Node implements Workable {
         }
 
         // Generate the trackers
-        AntiBan.generateTrackers((int) (System.currentTimeMillis() - start_time), false);
+        AntiBan.generateTrackers((int) (System.currentTimeMillis() - startTime), false);
     }
 
     @Override

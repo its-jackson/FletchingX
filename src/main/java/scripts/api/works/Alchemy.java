@@ -20,10 +20,10 @@ import java.util.List;
 public class Alchemy extends Work {
 
     // required staff
-    private final Workable.Staffs staff_of_fire = Workable.Staffs.FIRE_STAFF;
+    private final Workable.Staffs staffOfFire = Workable.Staffs.FIRE_STAFF;
 
     // required rune
-    private final Workable.Runes nature_runes = Workable.Runes.NATURE_RUNE;
+    private final Workable.Runes natureRune = Workable.Runes.NATURE_RUNE;
 
     public Alchemy(Resource resource, ResourceOption resourceOption, RunescapeBank bankLocation, TimeElapse time) {
         super(resource, resourceOption, bankLocation, time);
@@ -133,10 +133,10 @@ public class Alchemy extends Work {
     }
 
     public Workable.Staffs getStaffOfFire() {
-        return staff_of_fire;
+        return staffOfFire;
     }
 
     public Workable.Runes getNatureRunes() {
-        return nature_runes;
+        return natureRune;
     }
 }

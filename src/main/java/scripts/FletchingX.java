@@ -12,7 +12,6 @@ import org.tribot.script.sdk.script.TribotScriptManifest;
 import org.tribot.script.sdk.util.ScriptSettings;
 import org.tribot.script.sdk.walking.GlobalWalking;
 import org.tribot.script.sdk.walking.adapter.DaxWalkerAdapter;
-import scripts.api.PolymorphicMousePaint;
 import scripts.api.antiban.AntiBan;
 import scripts.api.exceptions.ScriptCompleteException;
 import scripts.api.gui.GUIFX;
@@ -33,14 +32,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-/**
- * To do:
- * 1) Fix profit gained / profit hr (Subtract the bow string or the log price)
- * 2) Add custom mouse paint
- * 3) Finish the GUI
- * 4) Add preference for depositing all
- */
-
 @TribotScriptManifest(
         name = "Fletching X",
         author = "Polymorphic",
@@ -49,7 +40,7 @@ import java.util.Optional;
 
 public class FletchingX implements TribotScript {
 
-    private final static StopWatch stop_watch = new StopWatch();
+    private final static StopWatch STOP_WATCH = new StopWatch();
 
     private final FletchingXVariables variables = FletchingXVariables.get();
     private final Worker worker = Worker.get();
@@ -71,8 +62,8 @@ public class FletchingX implements TribotScript {
         }
 
         // start stop watch
-        if (stop_watch.isStopped()) {
-            stop_watch.start();
+        if (STOP_WATCH.isStopped()) {
+            STOP_WATCH.start();
         }
 
         // execute work
@@ -231,9 +222,6 @@ public class FletchingX implements TribotScript {
             }
         });
 
-        // mouse paint
-        Painting.setMousePaint(new PolymorphicMousePaint(Color.RED, Color.RED, 24));
-
         // main script paint
         Painting.addPaint(g -> {
             g.setRenderingHints(getVariables().getAa());
@@ -246,15 +234,15 @@ public class FletchingX implements TribotScript {
             int levelsGained = getWorker().getLevelCount();
 
             long resourceGained = getWorker().getResourceCount();
-            long resourcesPerHour = (long) (resourceGained * (factor / (double) stop_watch.getTime()));
+            long resourcesPerHour = (long) (resourceGained * (factor / (double) STOP_WATCH.getTime()));
 
             int fletchingXPGained = getWorker().calculateFletchingExperienceGained();
-            long fletchingXPPerHour = (long) (fletchingXPGained * (factor / (double) stop_watch.getTime()));
+            long fletchingXPPerHour = (long) (fletchingXPGained * (factor / (double) STOP_WATCH.getTime()));
             int magicXPGained = getWorker().calculateMagicExperienceGained();
-            long magicXPPerHour = (long) (magicXPGained * (factor / (double) stop_watch.getTime()));
+            long magicXPPerHour = (long) (magicXPGained * (factor / (double) STOP_WATCH.getTime()));
 
             long profitGained = getWorker().getTotalProfit();
-            long profitPerHour = (long) (profitGained * (factor / (double) stop_watch.getTime()));
+            long profitPerHour = (long) (profitGained * (factor / (double) STOP_WATCH.getTime()));
 
             int percentToNextLevelFletching = Skill.FLETCHING.getXpPercentToNextLevel();
             int percentToNextLevelMagic = Skill.MAGIC.getXpPercentToNextLevel();
@@ -264,7 +252,7 @@ public class FletchingX implements TribotScript {
             g.drawImage(getVariables().getImg(), -1, 313, null);
             g.setColor(getVariables().getPaint_main_colour());
             g.setFont(getVariables().getFont());
-            g.drawString(String.format("Time Running: %s", Timing.msToString(stop_watch.getTime())), 15, 360); // runtime
+            g.drawString(String.format("Time Running: %s", Timing.msToString(STOP_WATCH.getTime())), 15, 360); // runtime
 
             if (getVariables().getCurrentWork() instanceof Cutting || getVariables().getCurrentWork() instanceof Stringing) {
                 g.drawString(String.format("XP Gained: %,d XP", fletchingXPGained), 15, 375); // gained xp
@@ -321,7 +309,7 @@ public class FletchingX implements TribotScript {
 
     private void end() {
         Log.log(String.format("End of script statistics for: %s", Worker.getUserName()));
-        Log.log(String.format("Total Time Ran: %s", Timing.msToString(stop_watch.getTime())));
+        Log.log(String.format("Total Time Ran: %s", Timing.msToString(STOP_WATCH.getTime())));
         Log.log(String.format("Total Resources Made: %s", getWorker().getResourceCount()));
         Log.log(String.format("Total Profit Made: %,d GP", getWorker().getTotalProfit()));
         Log.log(String.format("Total Fletching Experience Gained: %,d XP", getWorker().calculateFletchingExperienceGained()));

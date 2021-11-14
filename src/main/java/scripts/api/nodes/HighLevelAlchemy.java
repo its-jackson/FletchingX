@@ -20,7 +20,7 @@ public class HighLevelAlchemy extends Node implements Workable {
     private final FletchingXVariables variables = FletchingXVariables.get();
     private final Worker worker = Worker.get();
 
-    private static final String[] SPELL_NAMES = {"High Level Alchemy"};
+    private static final String[] SPELL_NAMES = {"High Level Alchemy", "Low Level Alchemy"};
 
     public HighLevelAlchemy(Work work) {
         super(work);
@@ -32,7 +32,10 @@ public class HighLevelAlchemy extends Node implements Workable {
 
     @Override
     public synchronized void execute() {
-        final long start_time = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
+
+        // before alching close all open widgets
+        closeAllOpenWidgets();
 
         AntiBan.checkAntiBanTask(Query.gameObjects()
                 .findRandom()
@@ -94,7 +97,7 @@ public class HighLevelAlchemy extends Node implements Workable {
                 });
 
         // Generate the trackers
-        AntiBan.generateTrackers((int) (System.currentTimeMillis() - start_time), false);
+        AntiBan.generateTrackers((int) (System.currentTimeMillis() - startTime), false);
     }
 
     @Override
@@ -130,6 +133,7 @@ public class HighLevelAlchemy extends Node implements Workable {
     private boolean shouldLowLevelAlchemy(Work work) {
         return false;
     }
+
 
     public FletchingXVariables getVariables() {
         return variables;
