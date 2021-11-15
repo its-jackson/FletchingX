@@ -39,7 +39,11 @@ public class Fletching extends Node implements Workable {
     public synchronized void execute() {
         final long startTime = System.currentTimeMillis();
 
-        Bank.close();
+        if (Bank.isOpen()) {
+            if (Bank.close()) {
+                log("Closed bank");
+            }
+        }
 
         final int player_pref_make_screen =
                 PlayerPreferences.preference("org.tribot.script.sdk.MakeScreen.makeAll", g -> g.normal(
