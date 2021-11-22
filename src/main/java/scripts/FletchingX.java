@@ -175,7 +175,7 @@ public class FletchingX implements TribotScript {
 //        Log.log("Print Debug: " + AntiBan.getPrintDebug());
 
         // set global walking engine
-        GlobalWalking.setEngine(new DaxWalkerAdapter("sub_JK3knXqxVGZtGR", "74aa47de-1cb1-4ee1-a8c9-5bae53c70b22"));
+        GlobalWalking.setEngine(new DaxWalkerAdapter("", ""));
 
         // on end listener
         ScriptListening.addEndingListener(this::end);
